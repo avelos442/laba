@@ -22,15 +22,15 @@ class City(models.Model):
         super().save(*args, **kwargs)
 
 
-class Language(models.Model):
+class Metro(models.Model):
     name = models.CharField(max_length=50,
-                            verbose_name='Язык программирования',
+                            verbose_name='Станция метро',
                             unique=True)
     slug = models.CharField(max_length=50, blank=True, unique=True)
 
     class Meta:
-        verbose_name = 'Язык программирования'
-        verbose_name_plural = 'Языки программирования'
+        verbose_name = 'Станция метро'
+        verbose_name_plural = 'Станции метро'
 
     def __str__(self):
         return self.name
@@ -41,19 +41,19 @@ class Language(models.Model):
         super().save(*args, **kwargs)
 
 
-class Vacancy(models.Model):
+class Declaration(models.Model):
     url = models.URLField(unique=True)
-    title = models.CharField(max_length=250, verbose_name='Заголовок вакансии')
-    company = models.CharField(max_length=250, verbose_name='Компания')
-    description = models.TextField(verbose_name='Описание вакансии')
+    title = models.CharField(max_length=250, verbose_name='Заголовок объявления')
+    residential_complex = models.CharField(max_length=250, verbose_name='Название ЖК')
+    description = models.TextField(verbose_name='Описание объявления')
     city = models.ForeignKey('city', on_delete=models.CASCADE, verbose_name='Город')
-    Language = models.ForeignKey('Language', on_delete=models.CASCADE,
-                                 verbose_name='Язык программирования')
+    Metro = models.ForeignKey('Metro', on_delete=models.CASCADE,
+                              verbose_name='Метро')
     timestamp = models.DateField(auto_now_add=True)
 
     class Meta:
-        verbose_name = 'Вакансия'
-        verbose_name_plural = 'Вакансии'
+        verbose_name = 'Объявление'
+        verbose_name_plural = 'Объявления'
 
     def __str__(self):
         return self.title
