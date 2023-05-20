@@ -47,9 +47,10 @@ class Declaration(models.Model):
     residential_complex = models.CharField(max_length=250, verbose_name='Название ЖК')
     description = models.TextField(verbose_name='Описание объявления')
     city = models.ForeignKey('city', on_delete=models.CASCADE, verbose_name='Город')
-    Metro = models.ForeignKey('Metro', on_delete=models.CASCADE,
+    metro = models.ForeignKey('metro', on_delete=models.CASCADE,
                               verbose_name='Метро')
     timestamp = models.DateField(auto_now_add=True)
+    price = models.DecimalField(max_digits=19, decimal_places=0, verbose_name='Стоимость')
 
     class Meta:
         verbose_name = 'Объявление'
