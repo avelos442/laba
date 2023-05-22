@@ -1,6 +1,11 @@
+import jsonfield
 from django.db import models
 
 from scraping.utils import from_cyrillic_to_english
+
+
+def default_urls():
+    return {"cian": "", "m_2": ""}
 
 
 class City(models.Model):
@@ -46,16 +51,36 @@ class Declaration(models.Model):
     title = models.CharField(max_length=250, verbose_name='Заголовок объявления')
     residential_complex = models.CharField(max_length=250, verbose_name='Название ЖК')
     description = models.TextField(verbose_name='Описание объявления')
-    city = models.ForeignKey('city', on_delete=models.CASCADE, verbose_name='Город')
+    city = models.ForeignKey('city', on_delete=models.CASCADE,
+                             verbose_name='Город')
     metro = models.ForeignKey('metro', on_delete=models.CASCADE,
                               verbose_name='Метро')
     timestamp = models.DateField(auto_now_add=True)
-    price = models.DecimalField(max_digits=19, decimal_places=0, verbose_name='Стоимость')
+    price = models.CharField(max_length=250, verbose_name='Стоимость')
 
     class Meta:
         verbose_name = 'Объявление'
         verbose_name_plural = 'Объявления'
+        ordering = ['-timestamp']
 
     def __str__(self):
         return self.title
+
+
+class Error(models.Model):
+    timestamp = models.DateField(auto_now_add=True)
+    data = jsonfield.JSONField()
+
+
+class Url(models.Model):
+    city = models.ForeignKey('city', on_delete=models.CASCADE,
+                             verbose_name='Город')
+    metro = models.ForeignKey('metro', on_delete=models.CASCADE,
+                              verbose_name='Метро')
+    url_data = jsonfield.JSONField(default=default_urls)
+    
+    class Meta:
+        unique_together = ("city", "metro")
+
+
 
