@@ -1,5 +1,4 @@
 from django import forms
-
 from scraping.models import City, Metro
 
 
