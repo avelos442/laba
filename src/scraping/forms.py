@@ -10,6 +10,6 @@ class FindForm(forms.Form):
     )
     metro = forms.ModelChoiceField(
         queryset=Metro.objects.all(), to_field_name="slug", required=False,
-        widget=forms.Select(attrs={'class': 'form-control'}),
+        widget=forms.Select(attrs={'class': 'form-control'},),
         label='Станция метро'
     )
