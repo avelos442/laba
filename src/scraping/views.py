@@ -6,13 +6,11 @@ from .models import Declaration
 
 
 def home_view(request):
-    #print(request.GET)
     form = FindForm
     return render(request, 'scraping/home.html', {'form': form})
 
 
 def list_view(request):
-    #print(request.GET)
     form = FindForm
     city = request.GET.get('city')
     metro = request.GET.get('metro')

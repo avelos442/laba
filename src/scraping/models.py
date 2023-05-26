@@ -9,6 +9,7 @@ def default_urls():
 
 
 class City(models.Model):
+    objects = None
     name = models.CharField(max_length=50,
                             verbose_name='Название города',
                             unique=True)
@@ -28,6 +29,7 @@ class City(models.Model):
 
 
 class Metro(models.Model):
+    objects = None
     name = models.CharField(max_length=50,
                             verbose_name='Станция метро',
                             unique=True)
@@ -73,6 +75,7 @@ class Error(models.Model):
 
 
 class Url(models.Model):
+    objects = None
     city = models.ForeignKey('city', on_delete=models.CASCADE,
                              verbose_name='Город')
     metro = models.ForeignKey('metro', on_delete=models.CASCADE,
@@ -81,6 +84,3 @@ class Url(models.Model):
     
     class Meta:
         unique_together = ("city", "metro")
-
-
-

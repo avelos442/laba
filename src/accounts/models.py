@@ -1,5 +1,4 @@
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
-from django.contrib.auth.models import UserManager
 from django.db import models
 
 
@@ -47,6 +46,7 @@ class MyUser(AbstractBaseUser):
     metro = models.ForeignKey('scraping.Metro', on_delete=models.SET_NULL,
                               null=True, blank=True)
     send_email = models.BooleanField(default=True)
+    name = models.CharField(max_length=100, null=True, blank=True)
 
     objects = MyUserManager()
 
@@ -56,18 +56,14 @@ class MyUser(AbstractBaseUser):
     def __str__(self):
         return self.email
 
-    def has_perm(self, perm, obj=None):
-        "Does the user have a specific permission?"
-        # Simplest possible answer: Yes, always
+    @staticmethod
+    def has_perm(perm, obj=None):
         return True
 
-    def has_module_perms(self, app_label):
-        "Does the user have permissions to view the app `app_label`?"
-        # Simplest possible answer: Yes, always
+    @staticmethod
+    def has_module_perms(app_label):
         return True
 
     @property
     def is_staff(self):
-        "Is the user a member of staff?"
-        # Simplest possible answer: All admins are staff
         return self.is_admin

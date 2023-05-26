@@ -1,11 +1,9 @@
 import asyncio
-import codecs
 import os
 import sys
 
 from django.contrib.auth import get_user_model
 from django.db import DatabaseError
-
 
 proj = os.path.dirname(os.path.abspath('manage.py'))
 sys.path.append(proj)
@@ -15,7 +13,7 @@ import django
 django.setup()
 
 from scraping.parsers import *
-from scraping.models import Declaration, City, Metro, Url
+from scraping.models import Declaration, Url
 
 User = get_user_model()
 
@@ -37,19 +35,17 @@ def get_urls(_settings):
     url_dct = {(q['city_id'], q['metro_id']): q['url_data'] for q in qs}
     urls = []
     for pair in _settings:
-        tmp = {}
-        tmp['city'] = pair[0]
-        tmp['metro'] = pair[1]
-        tmp['url_data'] = url_dct[pair]
+        tmp = {'city': pair[0], 'metro': pair[1], 'url_data': url_dct[pair]}
         urls.append(tmp)
+
     return urls
 
 
 async def main(value):
     func, url, city, metro = value
-    kv, err = await loop.run_in_executor(None, func, url, city, metro)
+    _kv, err = await loop.run_in_executor(None, func, url, city, metro)
     errors.extend(err)
-    apart.extend(kv)
+    apart.extend(_kv)
 
 
 settings = get_settings()
@@ -60,13 +56,16 @@ tmp_tasks = [(func, data['url_data'][key], data['city'], data['metro'])
              for data in url_list
              for func, key in parsers]
 tasks = asyncio.wait([loop.create_task(main(f)) for f in tmp_tasks])
-#for data in url_list:
-#
-#    for func, key in parsers:
-#        url = data['url_data'][key]
-#        a, e = func(url, city=data['city'], metro=data['metro'])
-#        apart += a
-#        errors += e
+
+'''
+for data in url_list:
+
+  for func, key in parsers:
+      url = data['url_data'][key]
+        a, e = func(url, city=data['city'], metro=data['metro'])
+        apart += a
+        errors += e
+'''
 
 loop.run_until_complete(tasks)
 loop.close()
@@ -78,7 +77,8 @@ for kv in apart:
     except DatabaseError:
         pass
 
-
-#h = codecs.open('work.txt', 'w', 'utf-8')
-#h.write(str(apart))
-#h.close()
+'''
+h = codecs.open('work.txt', 'w', 'utf-8')
+h.write(str(apart))
+h.close()
+'''

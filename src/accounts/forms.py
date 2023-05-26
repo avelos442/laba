@@ -59,10 +59,9 @@ class UserUpdateForm(forms.Form):
     )
     send_email = forms.BooleanField(required=False, widget=forms.CheckboxInput,
                                     label='Получать рассылку?')
+    name = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}),
+                           label='Имя')
 
     class Meta:
         model = User
         fields = ('city', 'metro', 'send_email')
-
-
-

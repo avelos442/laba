@@ -6,6 +6,7 @@ from accounts.forms import UserLoginForm, UserRegistrationForm, UserUpdateForm
 
 User = get_user_model()
 
+
 def login_view(request):
     form = UserLoginForm(request.POST or None)
     if form.is_valid():
@@ -46,13 +47,14 @@ def update_view(request):
                 user.city = data['city']
                 user.metro = data['metro']
                 user.send_email = data['send_email']
+                user.name = data['name']
                 user.save()
                 messages.success(request, 'Данные сохранены')
                 return redirect('accounts:update')
 
         form = UserUpdateForm(
-            initial={'city': user.city, 'metro': user.metro,
-                     'send_email': user.send_email})
+            initial={'city': user.city, 'metro': user.metro, 'send_email': user.send_email,
+                     'name': user.name})
         return render(request, 'accounts/update.html', {'form': form})
     else:
         return redirect('accounts:login')

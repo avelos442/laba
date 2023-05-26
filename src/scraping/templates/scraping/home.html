@@ -3,19 +3,32 @@
 {% block title %} Home {% endblock %}
 
 {% block content %}
+
 <div class ="row">
     <div class="col"><h2 class="text-center my-3">Сервис по сбору и рассылки объявлений о продаже квартир</h2>
     </div>
 </div>
 <div class="row">
     <div class="col-md-8 mx-auto">
-        <h4 class= "my-3"> Для просмотра обьявлений, заполните форму по одному из полей</h4>
-    <form action="{% url 'list' %}" method="GET" >
-        <div class="mb-3">
-        {{ form.as_p }}
+        {% if user.is_authenticated %}
+            <h4 class= "my-3"> Для просмотра обьявлений, заполните форму по одному из полей</h4>
+        <form action="{% url 'list' %}" method="GET" >
+            <div class="mb-3">
+            {{ form.as_p }}
+            </div>
+            <button type="submit" class="btn btn-primary">Найти</button>
+        </form>
+        {% else %}
+        <div class="col-md-8 mx-auto">
+            <h2 class="text-center my-3">Чтобы посмотреть объявления войдите в систему</h2>
+            <form class="text-center my-3" action="{% url 'accounts:login' %}" method="GET" >
+                <button type="submit " class=" btn btn-primary ">Войти</button>
+            </form>
+             <form class="text-center my-3" action="{% url 'accounts:register' %}" method="GET" >
+                <button type="submit " class=" btn btn-primary ">Зарегистрироваться</button>
+            </form>
         </div>
-        <button type="submit" class="btn btn-primary">Найти</button>
-    </form>
+        {% endif %}
     </div>
 </div>
 

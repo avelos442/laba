@@ -55,8 +55,10 @@ class Migration(migrations.Migration):
                 ('description', models.TextField(verbose_name='Описание объявления')),
                 ('timestamp', models.DateField(auto_now_add=True)),
                 ('price', models.CharField(max_length=250, verbose_name='Стоимость')),
-                ('city', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='scraping.City', verbose_name='Город')),
-                ('metro', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='scraping.Metro', verbose_name='Метро')),
+                ('city', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='scraping.City',
+                                           verbose_name='Город')),
+                ('metro', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='scraping.Metro',
+                                            verbose_name='Метро')),
             ],
             options={
                 'verbose_name': 'Объявление',
